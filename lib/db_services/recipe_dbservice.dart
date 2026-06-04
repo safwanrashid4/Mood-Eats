@@ -27,32 +27,4 @@ class RecipeDbservice {
       throw e;
     }
   }
-  static Future<List<DocumentSnapshot>> fetchBookmarkedRecipes() async {
-    final userData = await FirebaseFirestore.instance
-        .collection('save_recipe')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .get();
-
-    // Check if the document exists and if the "bookmarks" field exists
-    if (userData.exists && userData.data()!.containsKey('bookmarks')) {
-      final bookmarkIds = List<String>.from(userData.get('bookmarks') ?? []);
-
-      final List<DocumentSnapshot> bookmarkedRecipes = [];
-      for (final id in bookmarkIds) {
-        final docSnapshot =
-            await FirebaseFirestore.instance.collection('recipe').doc(id).get();
-        if (docSnapshot.exists) {
-          bookmarkedRecipes.add(docSnapshot);
-        }
-      }
-
-      return bookmarkedRecipes;
-    } else {
-      return [];
-    }
-  }
-
-
-
-  
 }

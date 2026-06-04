@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:moodeatsai/constants/constants.dart';
@@ -66,8 +67,7 @@ class RecommendedRecipeScreenState extends State<RecommendedRecipeScreen> {
     });
   }
 
-  Widget _buildRecipeList(
-      BuildContext context, AsyncSnapshot<List<DocumentSnapshot>> snapshot) {
+  Widget _buildRecipeList(BuildContext context, AsyncSnapshot<List<DocumentSnapshot>> snapshot) {
     if (snapshot.connectionState == ConnectionState.waiting) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -83,7 +83,8 @@ class RecommendedRecipeScreenState extends State<RecommendedRecipeScreen> {
     return ListView.builder(
       itemCount: snapshot.data!.length,
       itemBuilder: (context, index) {
-        var recipeData = snapshot.data![index].data() as Map<String, dynamic>;
+        var recipeData =
+            snapshot.data![index].data() as Map<String, dynamic>;
         return ClipRRect(
           borderRadius: BorderRadius.circular(20),
           child: Padding(
